@@ -944,6 +944,19 @@
         .team-cohort i { display: grid; place-items: center; width: 34px; height: 34px; font-size: .95rem; color: var(--on-ink); background: var(--ink); flex: none; }
         .team-cohort b { color: var(--accent); font-weight: 700; }
         @media (max-width: 640px) { .team-cohort { font-size: .95rem; } }
+
+        /* the cohort line lives in the label column, under the section title */
+        .section-title .team-cohort {
+            flex-direction: column; align-items: flex-start; gap: 2px;
+            margin-top: 18px; padding: 16px 18px 18px;
+            font-size: 1.05rem; max-width: 300px;
+        }
+        .section-title .team-cohort i { margin-bottom: 10px; }
+        .section-title .team-cohort b { display: none; }
+        .section-title .team-cohort span { position: relative; padding-right: 16px; }
+        .section-title .team-cohort span::before { content: ""; position: absolute; right: 0; top: .72em; width: 7px; height: 7px; background: var(--accent); }
+        @media (max-width: 999px) { .section-title .team-cohort { max-width: none; } }
+        .section-title p.team-cohort { font-weight: 600; color: var(--deep); font-size: 1.08rem; line-height: 1.7; }
     </style>
 
     <!-- Header -->
@@ -1762,6 +1775,7 @@
             <div class="section-title">
                 <h2>إعداد وتنفيذ</h2>
                 <p>للتواصل عبر LinkedIn</p>
+                <p class="team-cohort"><i class="fa-solid fa-graduation-cap"></i><span>طلاب الفرقة الثالثة</span><b aria-hidden="true">•</b><span>قسم المكتبات والمعلومات</span><b aria-hidden="true">•</b><span>كلية الآداب - جامعة المنوفية</span></p>
             </div>
 
             <div class="team-grid">
@@ -1828,8 +1842,7 @@
                     </div>
                 </div>
             </div>
-                    <p class="team-cohort"><i class="fa-solid fa-graduation-cap"></i><span>طلاب الفرقة الثالثة</span><b aria-hidden="true">•</b><span>قسم المكتبات والمعلومات</span><b aria-hidden="true">•</b><span>كلية الآداب - جامعة المنوفية</span></p>
-            <div class="supervision">
+                    <div class="supervision">
                 <div class="supervision-bar">
                     <h3><i class="fa-solid fa-chalkboard-user"></i> تحت إشراف</h3>
                     <div class="sv-dots" aria-hidden="true"><span></span><span></span><span></span></div>
