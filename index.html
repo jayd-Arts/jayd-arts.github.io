@@ -930,6 +930,20 @@
         .stat-card .label, .section-title p, .dean-info .title, .brand-text p { font-weight: 300; }
         .team-card-bottom-bar .member-name, .team-hover-top h4 { font-weight: 600; letter-spacing: 0; }
         .link-card .link-url, .portal-badge { letter-spacing: 0; }
+
+        /* cohort line under the student credits */
+        .team-cohort {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
+            margin-top: clamp(18px, 2.4vw, 26px);
+            padding: 12px 18px;
+            font-size: 1.02rem; font-weight: 600; line-height: 1.6; color: var(--deep);
+            background: var(--soft);
+            border: 1px solid var(--line2);
+            box-shadow: var(--shadow);
+        }
+        .team-cohort i { display: grid; place-items: center; width: 34px; height: 34px; font-size: .95rem; color: var(--on-ink); background: var(--ink); flex: none; }
+        .team-cohort b { color: var(--accent); font-weight: 700; }
+        @media (max-width: 640px) { .team-cohort { font-size: .95rem; } }
     </style>
 
     <!-- Header -->
@@ -1814,7 +1828,8 @@
                     </div>
                 </div>
             </div>
-                    <div class="supervision">
+                    <p class="team-cohort"><i class="fa-solid fa-graduation-cap"></i><span>طلاب الفرقة الثالثة</span><b aria-hidden="true">•</b><span>قسم المكتبات والمعلومات</span><b aria-hidden="true">•</b><span>كلية الآداب - جامعة المنوفية</span></p>
+            <div class="supervision">
                 <div class="supervision-bar">
                     <h3><i class="fa-solid fa-chalkboard-user"></i> تحت إشراف</h3>
                     <div class="sv-dots" aria-hidden="true"><span></span><span></span><span></span></div>
