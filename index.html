@@ -9,7 +9,7 @@
     <!-- Google Fonts: IBM Plex Sans Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Markazi+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Montserrat:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Markazi+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <script>window.FontAwesomeConfig = { autoReplaceSvg: "nest" };</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -719,9 +719,267 @@
             .js [data-rule]::before, .js .section-title::before { transform: none; }
         }
         @media (max-width: 640px) { footer { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); } }
+
+        /* ================= v3: the user's palette (green / red / orange on cream, black rules, hard shadows) ================= */
+        :root {
+            color-scheme: light;
+            --bg: hsl(45, 100%, 98%);
+            --paper: hsl(0, 0%, 100%);
+            --ink: hsl(150, 100%, 28%);          /* primary */
+            --deep: hsl(150, 60%, 5%);           /* foreground */
+            --mid: hsl(35, 100%, 52%);           /* accent */
+            --accent: hsl(35, 100%, 52%);
+            --on-accent: hsl(150, 60%, 5%);
+            --ink2: hsl(0, 100%, 48%);           /* secondary */
+            --soft: hsl(45, 60%, 90%);           /* muted */
+            --muted: hsl(45, 30%, 20%);          /* muted-foreground */
+            --line: hsla(150, 60%, 5%, .12);
+            --line2: hsl(0, 0%, 0%);             /* border */
+            --on-ink: hsl(0, 0%, 100%);
+            --band: hsl(150, 100%, 12%);         /* sidebar */
+            --on-band: hsl(0, 0%, 100%);
+            --shadow-c: hsl(0, 0%, 0%);
+            --shadow: 4px 4px 0 var(--shadow-c);
+            --shadow-lg: 6px 6px 0 var(--shadow-c);
+            --ill: hsl(150, 100%, 28%);
+            --ill-o: .14;
+
+            /* Latin falls to the theme's faces, Arabic to the Arabic faces behind them */
+            --sans: 'Montserrat', 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+            --serif: 'Lora', 'Markazi Text', 'Noto Naskh Arabic', Georgia, serif;
+            --mono: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+            --code: 'Space Mono', ui-monospace, Menlo, monospace;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                color-scheme: dark;
+                --bg: hsl(150, 80%, 4%); --paper: hsl(150, 70%, 8%); --ink: hsl(150, 100%, 48%); --deep: hsl(45, 100%, 95%);
+                --mid: hsl(35, 100%, 58%); --accent: hsl(35, 100%, 58%); --on-accent: hsl(150, 100%, 2%); --ink2: hsl(0, 100%, 60%);
+                --soft: hsl(150, 50%, 12%); --muted: hsl(45, 20%, 75%); --line: hsla(45, 100%, 95%, .12); --line2: hsl(45, 100%, 95%);
+                --on-ink: hsl(150, 100%, 2%); --band: hsl(150, 100%, 2%); --on-band: hsl(45, 100%, 95%); --shadow-c: hsl(45, 100%, 80%);
+                --ill: hsl(150, 100%, 48%); --ill-o: .12;
+            }
+        }
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg: hsl(150, 80%, 4%); --paper: hsl(150, 70%, 8%); --ink: hsl(150, 100%, 48%); --deep: hsl(45, 100%, 95%);
+            --mid: hsl(35, 100%, 58%); --accent: hsl(35, 100%, 58%); --on-accent: hsl(150, 100%, 2%); --ink2: hsl(0, 100%, 60%);
+            --soft: hsl(150, 50%, 12%); --muted: hsl(45, 20%, 75%); --line: hsla(45, 100%, 95%, .12); --line2: hsl(45, 100%, 95%);
+            --on-ink: hsl(150, 100%, 2%); --band: hsl(150, 100%, 2%); --on-band: hsl(45, 100%, 95%); --shadow-c: hsl(45, 100%, 80%);
+            --ill: hsl(150, 100%, 48%); --ill-o: .12;
+        }
+
+        /* radius 0 everywhere, as the palette asks */
+        *, *::before, *::after { border-radius: 0 !important; }
+        body { letter-spacing: 0; }
+        ::selection { background: var(--accent); color: var(--on-accent); }
+
+        /* hard offset shadows on every object that sits on the page */
+        .info-card, .doctor-card, .link-card, .stat-card, .tab-panel, .rules-box, .highlight-banner,
+        .supervision, .team-card, .tabs-nav, .dropdown-content, .chatbot-box, .chatbot-toggle, .dean-img-wrapper,
+        .info-card[style*="border: 2px"] { box-shadow: var(--shadow) !important; }
+        .doctor-photo, #member-6 .doctor-photo, .sv-mark { box-shadow: 3px 3px 0 var(--shadow-c); }
+        .info-card, .doctor-card, .link-card, .rules-box, .highlight-banner, .supervision, .team-card, .dean-img-wrapper {
+            outline: 0 !important;
+            transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .2s !important;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .info-card:hover, .doctor-card:hover, .link-card:hover, .rules-box:hover, .highlight-banner:hover,
+            .supervision:hover, .team-card:hover, .dean-card:hover .dean-img-wrapper {
+                transform: translate(-2px, -2px); box-shadow: var(--shadow-lg) !important;
+            }
+            .stat-card:hover { box-shadow: var(--shadow-lg) !important; }
+            .dropdown-btn:hover, .tab-btn:hover, .chatbot-toggle:hover { transform: translate(-1px, -1px); }
+        }
+        .stat-card { outline: 0 !important; }
+        .stat-card[data-on] { box-shadow: 0 0 0 2px var(--accent), var(--shadow) !important; }
+
+        /* softer inner rules so black borders stay for the outlines only */
+        .info-card ul li { border-bottom-color: var(--line); }
+        .info-card-header { border-bottom-color: var(--line); }
+        .doctor-spec { border-color: var(--line2); background: var(--soft); color: var(--deep); }
+        .stats-grid { border-color: var(--line2); }
+
+        /* accents */
+        .bp-progress { background: var(--accent); height: 3px; }
+        .brand-title i { background: var(--ink); color: var(--on-ink); box-shadow: 3px 3px 0 var(--shadow-c); }
+        .dropdown-btn { border-color: var(--line2); box-shadow: 3px 3px 0 var(--shadow-c); color: var(--deep); }
+        .dropdown-btn:hover, .dropdown-btn[aria-expanded="true"] { background: var(--ink); color: var(--on-ink); }
+        .dropdown-content { border-color: var(--line2); }
+        .dropdown-content a i { color: var(--ink); }
+        .stat-card::after { border-color: var(--line2); }
+        .stat-card:hover::after, .highlight-banner:hover::after, .rules-box:hover::after { background: var(--accent); }
+        .stat-card i { color: var(--ink2); }
+        .stat-card .number { color: var(--ink); }
+        .section-title::before { height: 3px; width: 38px; background: var(--accent); }
+        .section-title h2, .dean-info h3, .info-card-header h4, .doctor-name, .link-card .link-title, .sv-name { color: var(--deep); }
+        .info-card-header i { color: var(--on-ink); background: var(--ink); border-color: var(--line2); }
+        .highlight-banner, .supervision, .tab-panel, .tabs-nav, .chatbot-box { border-color: var(--line2) !important; }
+        .highlight-banner { background: var(--soft); }
+        .rules-box { border-color: var(--line2); border-inline-start: 6px solid var(--ink2); }
+        .tab-btn { color: var(--deep); border-left-color: var(--line2); }
+        .tab-btn:hover { background: var(--soft); }
+        .tab-btn.active { background: var(--ink); color: var(--on-ink); }
+        .step-list li::before, .info-card .step-list li::before { background: var(--accent); color: var(--on-accent); border-color: var(--line2); box-shadow: 2px 2px 0 var(--shadow-c); }
+        .portal-badge { background: var(--deep) !important; color: var(--bg); }
+        .info-card:nth-child(4n+1) .portal-badge { background: var(--ink) !important; color: var(--on-ink); }
+        .info-card:nth-child(4n+2) .portal-badge { background: var(--accent) !important; color: var(--on-accent); }
+        .info-card:nth-child(4n+3) .portal-badge { background: var(--ink2) !important; color: #FFFFFF; }
+        .link-card { border-color: var(--line2); }
+        .link-card::before { background: var(--accent); opacity: .28; }
+        .link-card i { color: var(--ink2); }
+        .doctor-card, .info-card, .info-card[style] { border-color: var(--line2) !important; }
+        .doctor-photo, #member-6 .doctor-photo, .doctor-photo.has-img, .dean-img-wrapper, .sv-mark { border-color: var(--line2); }
+        .dean-img-wrapper { background: var(--accent); }
+
+        /* credits */
+        .team-card { border-color: var(--line2); background: var(--band); }
+        .team-card-bottom-bar { background: linear-gradient(to top, hsla(150, 100%, 6%, .92) 0%, hsla(150, 100%, 6%, .5) 30%, hsla(150, 100%, 6%, 0) 62%); }
+        .team-card-bottom-bar .member-accent-line { height: 3px; background: hsl(35, 100%, 52%); }
+        .team-card-hover { background: hsl(150, 100%, 12%); }
+        .team-hover-top .hover-badge { background: hsl(35, 100%, 52%); color: hsl(150, 60%, 5%); }
+        .linkedin-btn { border-color: #FFFFFF; }
+        .linkedin-btn:hover { background: hsl(35, 100%, 52%); border-color: hsl(35, 100%, 52%); color: hsl(150, 60%, 5%); }
+
+        /* supervision */
+        .supervision-bar { border-bottom-color: var(--line2); background-color: var(--soft); }
+        .supervision-bar h3 { color: var(--deep); }
+        .supervision-bar h3 i { background: var(--ink); color: var(--on-ink); }
+        .supervision-bar .sv-dots span { border-color: var(--line2); }
+        .supervision-bar .sv-dots span:nth-child(1) { background: var(--ink2); }
+        .supervision-bar .sv-dots span:nth-child(2) { background: var(--accent); }
+        .supervision-bar .sv-dots span:nth-child(3) { background: var(--ink); }
+        .supervision-list li + li { border-left-color: var(--line2); }
+        .supervision-list li::before { background: var(--soft); }
+        .sv-mark { color: var(--ink); }
+        .sv-name { font-family: 'Lora', var(--serif); font-weight: 600; }
+
+        /* assistant */
+        .chatbot-toggle { background: var(--ink); color: var(--on-ink); border-color: var(--line2); }
+        .chatbot-header { background: var(--ink); color: var(--on-ink); border-bottom: 1px solid var(--line2); }
+        .faq-drawer-toggle { border-color: var(--on-ink); color: var(--on-ink); }
+        .faq-drawer-toggle:hover { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+        .chat-msg.bot { border-color: var(--line2); }
+        .chat-msg.user { background: var(--ink); color: var(--on-ink); }
+        .chatbot-input button { background: var(--accent); color: var(--on-accent); border-color: var(--line2); }
+        .faq-cat-btn.active, .faq-cat-btn:hover, .quick-btn:hover { background: var(--ink); color: var(--on-ink); border-color: var(--line2); }
+
+        /* footer: a dark green band */
+        footer { background: var(--band); color: var(--on-band); border-top: 1px solid var(--line2); }
+
+        /* build animation */
+        .bp-frame { border-color: var(--ink2); }
+        .bp-frame b { background: var(--ink2); color: #FFFFFF; }
+        .bp-cursor { color: var(--ink2); }
+        .bp-cell { background: hsla(35, 100%, 52%, .25); }
+
+        /* ---------- background: quiet line drawings of books that drift ---------- */
+        .bp-scene { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; color: var(--ill); }
+        .bp-ill {
+            position: absolute; left: var(--x); top: var(--y); width: var(--w);
+            opacity: var(--ill-o);
+            translate: var(--sx, 0) var(--sy, 0);
+            transition: translate 1.2s var(--ease);
+        }
+        .bp-ill svg { display: block; width: 100%; height: auto; overflow: visible; animation: bp-drift var(--d, 26s) ease-in-out var(--delay, 0s) infinite alternate; }
+        .bp-ill svg * { vector-effect: non-scaling-stroke; }
+        @keyframes bp-drift {
+            0% { transform: translate(0, 0) rotate(var(--r0, -3deg)); }
+            50% { transform: translate(var(--dx, 12px), var(--dy, -18px)) rotate(var(--r1, 2deg)); }
+            100% { transform: translate(calc(var(--dx, 12px) * -.6), calc(var(--dy, -18px) * .5)) rotate(var(--r0, -3deg)); }
+        }
+        .bp-turn { transform-box: view-box; transform-origin: 70px 50px; animation: bp-turn 9s ease-in-out infinite alternate; }
+        @keyframes bp-turn { 0%, 35% { transform: scaleX(1); } 65%, 100% { transform: scaleX(-1); } }
+        .bp-flutter { transform-box: fill-box; transform-origin: 50% 0; animation: bp-flutter 6s ease-in-out infinite alternate; }
+        @keyframes bp-flutter { from { transform: rotate(-6deg); } to { transform: rotate(7deg); } }
+        @media (max-width: 760px) {
+            .bp-ill { width: calc(var(--w) * 1.6); }
+            .bp-ill:nth-child(n+7) { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .bp-ill svg, .bp-turn, .bp-flutter { animation: none !important; }
+        }
+        /* sections and speeches stay transparent so the drawings show around the text */
+        .stats-grid { background-color: hsla(45, 100%, 98%, .7); }
+        @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .stats-grid { background-color: hsla(150, 80%, 4%, .7); } }
+        :root[data-theme="dark"] .stats-grid { background-color: hsla(150, 80%, 4%, .7); }
+        header { background: color-mix(in srgb, var(--bg) 88%, transparent); border-bottom-color: var(--line2); }
+        @media (max-width: 640px) { .stat-card .number { font-size: 1.55rem; white-space: nowrap; } .stat-card { padding: 14px 12px 16px; } }
     </style>
 
     <!-- Header -->
+        <!-- Background: quiet line drawings of books (decorative) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="bk-open" viewBox="0 0 140 92">
+                <g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M70 20 C55 9 30 7 8 11 V80 C30 76 55 78 70 88 Z" />
+                    <path d="M70 20 C85 9 110 7 132 11 V80 C110 76 85 78 70 88 Z" />
+                    <path d="M18 26 C34 23 50 24 61 29 M18 38 C34 35 50 36 61 41 M18 50 C34 47 50 48 61 53 M18 62 C30 60 42 60 52 63" />
+                    <path d="M122 26 C106 23 90 24 79 29 M122 38 C106 35 90 36 79 41 M122 50 C106 47 90 48 79 53" />
+                    <path class="bp-turn" d="M70 20 C85 11 106 9 126 13 V78 C106 75 85 78 70 86 Z" fill="var(--bg)" />
+                    <path d="M4 14 V84 C30 80 55 82 70 91 C85 82 110 80 136 84 V14" />
+                </g>
+            </symbol>
+            <symbol id="bk-stack" viewBox="0 0 130 104">
+                <g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+                    <rect x="10" y="74" width="108" height="22" />
+                    <path d="M24 74 V96 M104 74 V96 M30 85 H96" />
+                    <g transform="rotate(-4 64 62)"><rect x="18" y="52" width="94" height="20" /><path d="M30 52 V72 M100 52 V72" /></g>
+                    <rect x="26" y="52" width="10" height="20" transform="rotate(-4 64 62)" fill="var(--accent)" fill-opacity=".55" />
+                    <g transform="rotate(3 60 38)"><rect x="12" y="29" width="98" height="20" /><path d="M24 29 V49 M98 29 V49 M34 39 H86" /></g>
+                    <path d="M84 29 V12 L90 17 L96 12 V29" transform="rotate(3 60 38)" />
+                </g>
+            </symbol>
+            <symbol id="bk-shelf" viewBox="0 0 170 110">
+                <g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+                    <path d="M4 100 H166 M10 100 V108 M160 100 V108" />
+                    <rect x="14" y="30" width="18" height="70" /><path d="M14 44 H32 M14 86 H32" />
+                    <rect x="34" y="18" width="22" height="82" /><path d="M39 30 H51 M39 36 H51" />
+                    <rect x="58" y="40" width="14" height="60" />
+                    <rect x="74" y="24" width="20" height="76" /><circle cx="84" cy="44" r="4" />
+                    <rect x="96" y="34" width="16" height="66" fill="var(--accent)" fill-opacity=".4" />
+                    <g transform="rotate(16 122 100)"><rect x="116" y="30" width="18" height="70" /><path d="M116 46 H134" /></g>
+                    <rect x="142" y="56" width="20" height="44" />
+                </g>
+            </symbol>
+            <symbol id="bk-page" viewBox="0 0 60 78">
+                <g class="bp-flutter" fill="var(--bg)" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+                    <path d="M4 4 H42 L56 18 V74 H4 Z" />
+                    <path d="M42 4 V18 H56" fill="none" />
+                    <path d="M12 30 H48 M12 40 H48 M12 50 H40 M12 60 H44" fill="none" />
+                </g>
+            </symbol>
+            <symbol id="bk-closed" viewBox="0 0 90 110">
+                <g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+                    <path d="M14 8 H80 V98 H14 C8 98 6 94 6 90 V16 C6 11 9 8 14 8 Z" />
+                    <path d="M14 98 C10 98 10 92 14 92 H80" />
+                    <rect x="26" y="26" width="42" height="22" />
+                    <path d="M32 34 H62 M32 40 H54" />
+                    <path d="M62 8 V-6 L67 -1 L72 -6 V8" fill="var(--ink2)" fill-opacity=".35" />
+                </g>
+            </symbol>
+            <symbol id="bk-lamp" viewBox="0 0 80 110">
+                <g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M18 104 H62 M40 104 V60 L58 34" />
+                    <path d="M46 22 L72 40 L60 50 Z" />
+                    <path d="M60 50 L70 64" stroke-dasharray="3 4" />
+                </g>
+            </symbol>
+        </defs>
+    </svg>
+    <div class="bp-scene" aria-hidden="true">
+        <div class="bp-ill" style="--x:4%;--y:16%;--w:150px;--d:28s;--dx:14px;--dy:-20px"><svg viewBox="0 0 140 92"><use href="#bk-open"/></svg></div>
+        <div class="bp-ill" style="--x:80%;--y:10%;--w:120px;--d:34s;--delay:-6s;--dx:-12px;--dy:16px;--r0:4deg;--r1:-2deg"><svg viewBox="0 0 130 104"><use href="#bk-stack"/></svg></div>
+        <div class="bp-ill" style="--x:58%;--y:70%;--w:180px;--d:40s;--delay:-12s;--dx:18px;--dy:-10px;--r0:-1deg;--r1:1deg"><svg viewBox="0 0 170 110"><use href="#bk-shelf"/></svg></div>
+        <div class="bp-ill" style="--x:26%;--y:48%;--w:56px;--d:22s;--delay:-3s;--dx:22px;--dy:-26px;--r0:-10deg;--r1:8deg"><svg viewBox="0 0 60 78"><use href="#bk-page"/></svg></div>
+        <div class="bp-ill" style="--x:88%;--y:56%;--w:82px;--d:30s;--delay:-9s;--dx:-16px;--dy:-18px;--r0:8deg;--r1:-4deg"><svg viewBox="0 0 90 110"><use href="#bk-closed"/></svg></div>
+        <div class="bp-ill" style="--x:6%;--y:74%;--w:96px;--d:36s;--delay:-15s;--dx:12px;--dy:14px;--r0:-6deg;--r1:3deg"><svg viewBox="0 0 130 104"><use href="#bk-stack"/></svg></div>
+        <div class="bp-ill" style="--x:44%;--y:8%;--w:64px;--d:26s;--delay:-4s;--dx:-18px;--dy:20px;--r0:6deg;--r1:-8deg"><svg viewBox="0 0 60 78"><use href="#bk-page"/></svg></div>
+        <div class="bp-ill" style="--x:70%;--y:34%;--w:120px;--d:32s;--delay:-18s;--dx:10px;--dy:-14px;--r0:2deg;--r1:-3deg"><svg viewBox="0 0 140 92"><use href="#bk-open"/></svg></div>
+        <div class="bp-ill" style="--x:32%;--y:86%;--w:70px;--d:38s;--delay:-8s;--dx:-10px;--dy:-12px;--r0:0deg;--r1:3deg"><svg viewBox="0 0 80 110"><use href="#bk-lamp"/></svg></div>
+    </div>
+
     <header>
         <div class="header-container">
             <div class="brand-title">
@@ -2111,6 +2369,27 @@
         // keep offsets increasing
         for (var k = 1; k < kf.length; k++) if (kf[k].offset <= kf[k - 1].offset) kf[k].offset = Math.min(1, kf[k - 1].offset + 0.001);
         cursor.animate(kf, { duration: total, easing: 'linear' }).onfinish = function () { cursor.remove(); frame.remove(); };
+    })();
+    </script>
+
+    <script>
+    /* the background drawings lean gently away from the pointer, each at its own depth */
+    (function () {
+        if (!window.matchMedia || !matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var ills = Array.prototype.slice.call(document.querySelectorAll('.bp-ill'));
+        var raf = 0, mx = 0, my = 0;
+        addEventListener('pointermove', function (e) {
+            mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5;
+            if (raf) return;
+            raf = requestAnimationFrame(function () {
+                raf = 0;
+                ills.forEach(function (el, i) {
+                    var d = 8 + (i % 4) * 7;
+                    el.style.setProperty('--sx', (-mx * d).toFixed(1) + 'px');
+                    el.style.setProperty('--sy', (-my * d).toFixed(1) + 'px');
+                });
+            });
+        }, { passive: true });
     })();
     </script>
 </html>
