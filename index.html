@@ -9,7 +9,7 @@
     <!-- Google Fonts: IBM Plex Sans Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Markazi+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <script>window.FontAwesomeConfig = { autoReplaceSvg: "nest" };</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -602,6 +602,123 @@
             .team-grid { grid-template-columns: minmax(0, 1fr); max-width: 360px; margin-inline: auto; }
             .chatbot-box { width: 320px; }
         }
+    
+        /* ================= v2: stronger type, motion and the supervision card ================= */
+        :root { --serif: 'Markazi Text', 'Noto Naskh Arabic', Georgia, serif; }
+
+        /* type: larger display sizes from the serif */
+        .brand-text h1 { font-weight: 600; font-size: 1.55rem; letter-spacing: 0; }
+        .section-title h2 { font-weight: 600; font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1.15; }
+        .dean-info h3 { font-weight: 600; font-size: clamp(1.6rem, 2.4vw, 2.1rem); line-height: 1.2; }
+        .stat-card .number { font-weight: 600; font-size: clamp(2rem, 3vw, 2.7rem); line-height: 1.1; }
+        .info-card-header h4, .info-card > h4, .rules-box h4, .tab-panel h4, .highlight-banner h4 { font-weight: 600; font-size: 1.3rem !important; line-height: 1.35; }
+        .doctor-name { font-weight: 600; font-size: 1.3rem; line-height: 1.3; }
+        .link-card .link-title { font-weight: 600; font-size: 1.22rem; }
+        .speech-text { font-size: 1.08rem; }
+        .speech-text::first-line { font-family: var(--serif); font-weight: 600; font-size: 1.35rem; color: var(--ink); }
+
+        /* header: rule thickens and a reading-progress line runs along its foot */
+        header { transition: box-shadow .3s, background-color .3s; }
+        header.is-scrolled { box-shadow: 0 1px 0 var(--line2), 0 10px 30px -24px rgba(11, 18, 64, .6); }
+        .bp-progress {
+            position: absolute; right: 0; left: 0; bottom: -1px; height: 2px;
+            background: var(--ink); transform: scaleX(0); transform-origin: 100% 50%;
+            pointer-events: none;
+        }
+        .brand-title i { transition: transform .5s var(--ease); }
+        .brand-title:hover i { transform: rotate(-90deg); }
+
+        /* hero board: a cell lights under the pointer, notes sway at different depths */
+        .stats-grid { overflow: hidden; isolation: isolate; }
+        .bp-cell { position: absolute; left: 0; top: 0; width: 32px; height: 32px; background: var(--soft); opacity: 0; pointer-events: none; z-index: -1; transition: opacity .2s, transform .12s linear; }
+        .stats-grid:hover .bp-cell { opacity: 1; }
+        .stat-card { --px: 0px; --py: 0px; translate: var(--px) var(--py); transition: outline-color .2s, transform .5s var(--ease), translate .6s var(--ease); }
+        .stat-card[data-on] { outline-color: var(--ink); }
+
+        /* the build: a crosshair marquee draws the board, then each note is placed */
+        .bp-frame { position: absolute; top: 0; right: 0; border: 1px solid var(--ink); pointer-events: none; z-index: 5; opacity: 0; }
+        .bp-frame b { position: absolute; right: -1px; top: calc(100% + 6px); font: 500 11px/1 var(--code); padding: 3px 6px; color: var(--on-ink); background: var(--ink); white-space: nowrap; direction: ltr; }
+        .bp-cursor { position: absolute; left: 0; top: 0; z-index: 6; width: 22px; height: 22px; pointer-events: none; opacity: 0; color: var(--ink); }
+        .bp-cursor svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+        /* scroll reveals, applied by script only to what starts below the first screen */
+        .js [data-rv] { opacity: 0; transform: translateY(26px); transition: opacity .9s var(--ease) calc(var(--i, 0) * 90ms), transform .9s var(--ease) calc(var(--i, 0) * 90ms); }
+        .js [data-rv][data-in] { opacity: 1; transform: none; }
+        .js [data-rv] .dean-img-wrapper img, .js [data-rv].doctor-card .doctor-photo img, .js [data-rv].team-card .team-card-img { clip-path: inset(100% 0 0 0); transition: clip-path 1.1s var(--ease) calc(var(--i, 0) * 90ms + 150ms), transform .6s var(--ease), filter .4s; }
+        .js [data-rv][data-in] .dean-img-wrapper img, .js [data-rv][data-in].doctor-card .doctor-photo img, .js [data-rv][data-in].team-card .team-card-img { clip-path: inset(0 0 0 0); }
+
+        /* section rules draw themselves in from the right */
+        .js .dean-card[data-rule], .js section[data-rule] { border-top-color: transparent !important; }
+        .js [data-rule]::before { content: ""; position: absolute; top: -1px; right: 0; left: 0; height: 1px; background: var(--line2); transform: scaleX(0); transform-origin: 100% 50%; transition: transform 1.2s var(--ease); }
+        .js [data-rule][data-in]::before { transform: scaleX(1); }
+        .js .section-title::before { transform: scaleX(0); transform-origin: 100% 50%; transition: transform .8s var(--ease) .3s; }
+        .js [data-in] > .section-title::before, .js .section-title[data-in]::before { transform: scaleX(1); }
+
+        /* cards lift a little and their corner mark turns on hover */
+        .info-card, .doctor-card, .link-card { transition: outline-color .2s, transform .45s var(--ease), border-color .2s; }
+        .stat-card::after, .highlight-banner::after, .rules-box::after { transition: transform .5s var(--ease), background-color .3s; }
+        .stat-card:hover::after, .highlight-banner:hover::after, .rules-box:hover::after { transform: rotate(45deg); background: var(--ink); }
+        @media (hover: hover) and (pointer: fine) {
+            .info-card:hover, .doctor-card:hover { transform: translateY(-3px); }
+            .tab-btn { position: relative; }
+        }
+        .tab-panel.active { animation: bp-panel .45s var(--ease); }
+        @keyframes bp-panel { from { opacity: 0; clip-path: inset(0 0 100% 0); } to { opacity: 1; clip-path: inset(0 0 0 0); } }
+
+        /* ---------- supervision card ---------- */
+        .supervision {
+            position: relative;
+            margin-top: clamp(22px, 3vw, 34px);
+            background: var(--paper);
+            border: 1px solid var(--ink);
+            border-radius: 2px;
+            box-shadow: 12px 12px 0 var(--soft);
+        }
+        .supervision-bar {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--line2);
+            background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+            background-size: 16px 16px; background-position: -1px -1px;
+        }
+        .supervision-bar h3 { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 600; font-size: 1.5rem; line-height: 1.2; color: var(--ink); }
+        .supervision-bar h3 i { display: grid; place-items: center; width: 34px; height: 34px; font-size: .95rem; color: var(--on-ink); background: var(--ink); border-radius: 2px; }
+        .supervision-bar .sv-dots { display: flex; gap: 5px; }
+        .supervision-bar .sv-dots span { width: 9px; height: 9px; border: 1px solid var(--ink); }
+        .supervision-bar .sv-dots span:first-child { background: var(--ink); }
+        .supervision-list { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .supervision-list li {
+            position: relative; isolation: isolate;
+            display: flex; align-items: center; gap: 16px;
+            padding: 22px 20px;
+            direction: ltr; text-align: left;
+        }
+        .supervision-list li + li { border-left: 1px solid var(--line2); }
+        .supervision-list li::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--soft); transform: scaleY(0); transform-origin: 50% 100%; transition: transform .5s var(--ease); }
+        .supervision-list li:hover::before { transform: scaleY(1); }
+        .sv-mark {
+            display: grid; place-items: center; flex: none;
+            width: 54px; height: 54px;
+            font-size: 1.25rem; color: var(--ink);
+            border: 1px solid var(--ink); border-radius: 2px; background: var(--paper);
+            box-shadow: 5px 5px 0 var(--soft);
+            transition: transform .5s var(--ease);
+        }
+        .supervision-list li:hover .sv-mark { transform: rotate(-6deg); }
+        .sv-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+        .sv-title { font: 500 .72rem/1 var(--code); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+        .sv-name { font-family: var(--serif); font-weight: 600; font-size: clamp(1.5rem, 2.2vw, 1.9rem); line-height: 1.1; color: var(--ink); }
+
+        @media (max-width: 640px) {
+            .supervision-list { grid-template-columns: minmax(0, 1fr); }
+            .supervision-list li + li { border-left: 0; border-top: 1px solid var(--line2); }
+            .supervision { box-shadow: 8px 8px 0 var(--soft); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .js [data-rv] { opacity: 1; transform: none; }
+            .js [data-rule]::before, .js .section-title::before { transform: none; }
+        }
+        @media (max-width: 640px) { footer { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); } }
     </style>
 
     <!-- Header -->
@@ -1414,6 +1531,16 @@
                     </div>
                 </div>
             </div>
+                    <div class="supervision">
+                <div class="supervision-bar">
+                    <h3><i class="fa-solid fa-chalkboard-user"></i> تحت إشراف</h3>
+                    <div class="sv-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                </div>
+                <ul class="supervision-list">
+                    <li><span class="sv-mark"><i class="fa-solid fa-user-graduate"></i></span><span class="sv-text"><span class="sv-name" lang="en">Dr. Asmaa Salah</span></span></li>
+                    <li><span class="sv-mark"><i class="fa-solid fa-user-graduate"></i></span><span class="sv-text"><span class="sv-name" lang="en">Dr. Amany Saleh</span></span></li>
+                </ul>
+            </div>
         </section>
 
     </div>
@@ -1847,4 +1974,143 @@
     </script>
 
 
+
+    <script>
+    /* Blueprint motion: header progress, a built-in-front-of-you hero board, pointer play and scroll reveals. */
+    (function () {
+        var doc = document.documentElement;
+        var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var fine = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
+        doc.classList.add('js');
+
+        /* header state + reading progress */
+        var header = document.querySelector('header');
+        var bar = document.createElement('span');
+        bar.className = 'bp-progress';
+        header.appendChild(bar);
+        var ticking = false;
+        function paint() {
+            ticking = false;
+            var y = window.scrollY || 0;
+            var max = doc.scrollHeight - innerHeight;
+            header.classList.toggle('is-scrolled', y > 8);
+            bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
+        }
+        addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(paint); } }, { passive: true });
+        paint();
+
+        if (reduce) return;
+
+        /* ---- scroll reveals (only for things that start below the first screen) ---- */
+        var vh = innerHeight;
+        var below = function (el) { return el.getBoundingClientRect().top > vh * 0.92; };
+        var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) { e.target.setAttribute('data-in', ''); io.unobserve(e.target); }
+            });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }) : null;
+        function watch(el, i) {
+            if (!io) return;
+            if (i !== undefined) el.style.setProperty('--i', i);
+            io.observe(el);
+        }
+        // section rules
+        document.querySelectorAll('.container > section').forEach(function (s) {
+            s.setAttribute('data-rule', '');
+            if (below(s)) watch(s); else s.setAttribute('data-in', '');
+        });
+        // single blocks
+        var singles = '.section-title, .dean-header, .speech-text, .highlight-banner, .rules-box, .tabs-nav, .tab-panel, .supervision';
+        document.querySelectorAll(singles).forEach(function (el) {
+            if (below(el)) { el.setAttribute('data-rv', ''); watch(el, 0); }
+        });
+        // staggered groups
+        document.querySelectorAll('.grid-cards, .staff-grid, .team-grid').forEach(function (g) {
+            Array.prototype.forEach.call(g.children, function (c, i) {
+                if (below(c)) { c.setAttribute('data-rv', ''); watch(c, i % 4); }
+            });
+        });
+
+        /* ---- hero board: built in front of you, then live under the pointer ---- */
+        var board = document.querySelector('.stats-grid');
+        if (!board) return;
+        var cards = Array.prototype.slice.call(board.querySelectorAll('.stat-card'));
+        var cell = document.createElement('span');
+        cell.className = 'bp-cell';
+        board.appendChild(cell);
+
+        if (fine) {
+            board.addEventListener('pointermove', function (e) {
+                var r = board.getBoundingClientRect();
+                var x = e.clientX - r.left, y = e.clientY - r.top;
+                cell.style.transform = 'translate(' + (Math.floor(x / 32) * 32 - 1) + 'px,' + (Math.floor(y / 32) * 32 - 1) + 'px)';
+                var mx = (x / r.width - 0.5), my = (y / r.height - 0.5);
+                cards.forEach(function (c, i) {
+                    var d = [10, 16, 8, 13][i % 4];
+                    c.style.setProperty('--px', (mx * d).toFixed(1) + 'px');
+                    c.style.setProperty('--py', (my * d).toFixed(1) + 'px');
+                });
+            });
+            board.addEventListener('pointerleave', function () {
+                cards.forEach(function (c) { c.style.setProperty('--px', '0px'); c.style.setProperty('--py', '0px'); });
+            });
+        }
+
+        if (below(board) || !board.animate) return;
+        var W = board.offsetWidth, H = board.offsetHeight;
+        var frame = document.createElement('span');
+        frame.className = 'bp-frame';
+        frame.innerHTML = '<b>0 × 0</b>';
+        var badge = frame.firstChild;
+        var cursor = document.createElement('span');
+        cursor.className = 'bp-cursor';
+        cursor.innerHTML = '<svg viewBox="0 0 22 22"><path d="M11 0v22M0 11h22" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="11" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>';
+        board.appendChild(frame);
+        board.appendChild(cursor);
+
+        var MARQ = 760, START = 120;
+        // the board is drawn from its top-right corner (the reading start in Arabic)
+        board.animate([{ clipPath: 'inset(0 0 100% 100%)' }, { clipPath: 'inset(0 0 0 0)' }],
+            { duration: MARQ, delay: START, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'backwards' });
+        frame.animate([{ opacity: 1, width: '0px', height: '0px' }, { opacity: 1, width: W + 'px', height: H + 'px', offset: .94 }, { opacity: 0, width: W + 'px', height: H + 'px' }],
+            { duration: MARQ + 260, delay: START, easing: 'cubic-bezier(.65,0,.35,1)' });
+        var t0 = performance.now() + START;
+        (function count(now) {
+            var p = Math.max(0, Math.min(1, (now - t0) / MARQ));
+            var e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+            badge.textContent = Math.round(W * e) + ' × ' + Math.round(H * e);
+            if (p < 1) requestAnimationFrame(count);
+        })(performance.now());
+
+        // each note arrives offset and settles into place with a selection outline
+        var offs = [[-36, -54], [40, 46], [-30, 52], [34, -48]];
+        var placeAt = START + MARQ + 60;
+        cards.forEach(function (c, i) {
+            var o = offs[i % 4], at = placeAt + i * 230;
+            c.animate([
+                { opacity: 0, transform: 'translate(' + o[0] + 'px,' + o[1] + 'px) scale(.92)' },
+                { opacity: 1, transform: 'translate(' + o[0] + 'px,' + o[1] + 'px) scale(.97)', offset: .25 },
+                { opacity: 1, transform: getComputedStyle(c).transform === 'none' ? 'none' : getComputedStyle(c).transform }
+            ], { duration: 620, delay: at, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
+            setTimeout(function () { c.setAttribute('data-on', ''); }, at + 150);
+            setTimeout(function () { c.removeAttribute('data-on'); }, at + 900);
+        });
+
+        // one crosshair drives the whole build, then leaves by the nearest edge
+        var kf = [{ transform: 'translate(' + (W + 40) + 'px,-40px)', opacity: 0, offset: 0 }];
+        var total = placeAt + cards.length * 230 + 700;
+        var at = function (ms) { return Math.min(1, ms / total); };
+        kf.push({ transform: 'translate(' + (W - 11) + 'px,-11px)', opacity: 1, offset: at(START) });
+        kf.push({ transform: 'translate(-11px,' + (H - 11) + 'px)', opacity: 1, offset: at(START + MARQ) });
+        cards.forEach(function (c, i) {
+            var x = c.offsetLeft + c.offsetWidth / 2 - 11, y = c.offsetTop + c.offsetHeight * .45 - 11;
+            kf.push({ transform: 'translate(' + x + 'px,' + y + 'px)', opacity: 1, offset: at(placeAt + i * 230 + 420) });
+        });
+        var last = cards[cards.length - 1];
+        kf.push({ transform: 'translate(-60px,' + (last ? last.offsetTop : H / 2) + 'px)', opacity: 0, offset: 1 });
+        // keep offsets increasing
+        for (var k = 1; k < kf.length; k++) if (kf[k].offset <= kf[k - 1].offset) kf[k].offset = Math.min(1, kf[k - 1].offset + 0.001);
+        cursor.animate(kf, { duration: total, easing: 'linear' }).onfinish = function () { cursor.remove(); frame.remove(); };
+    })();
+    </script>
 </html>
